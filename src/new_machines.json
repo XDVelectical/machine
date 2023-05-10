@@ -1,0 +1,29 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.activate_drill": {
+      "states": {
+        "default": {
+          "transitions": [ { "walking": "(1.0)" } ],
+          "on_entry": [ "/function activate_drill" ]
+        },
+        "walking": {
+          "transitions": [ { "default": "(1.0)" } ],
+          "on_entry": [ "/function activate_drill" ]
+        }
+      }
+    },
+    "controller.animation.activate_gas_absorber": {
+      "states": {
+        "default": {
+          "transitions": [ { "walking": "(1.0)" } ],
+          "on_entry": [ "/function activate_gas_absorber" ]
+        },
+        "walking": {
+          "transitions": [ { "default": "(1.0)" } ],
+          "on_entry": [ "/function activate_gas_absorber" ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+   "format_version":"1.8.0",
+   "minecraft:entity":{
+      "description":{
+         "identifier":"vatonage:activate_drill",
+         "is_spawnable":false,
+         "is_summonable":true,
+         "is_experimental":false,
+         "scripts":{
+            "animate":[
+               "walk"
+            ]
+         },
+         "animations":{
+            "walk":"controller.animation.activate_drill"
+         }
+      },
+      "components":{
+         "minecraft:collision_box":{
+            "width":0.1,
+            "height":0.1
+         },
+         "minecraft:physics": {
+         },
+         "minecraft:damage_sensor": {
+           "triggers": {
+             "cause": "any",
+             "deals_damage": false
+           }
+         }
+      },
+      "events":{
+         "minecraft:despawn_event":{
+            "add":{
+               "component_groups":[
+                  "minecraft:despawn"
+               ]
+            }
+         }
+      },
+      "component_groups":{
+         "minecraft:despawn":{
+            "minecraft:instant_despawn":{}
+         }
+      }
+   }
+}

@@ -1,0 +1,33 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shaped": {
+    "description": {
+    "identifier": "vatonage:advanced_battery"
+    },
+
+    
+    "tags": [ "crafting_table" ],
+    "pattern": [
+      "BDB",
+      "ACA",
+      "BDB"
+    ],
+    "key": {
+      "A": {
+        "item": "vatonage:plastic_bunch"
+      },
+      "B": {
+        "item": "minecraft:iron_block"
+      },
+      "C": {
+        "item": "vatonage:power_cable"
+      },
+      "D": {
+        "item": "minecraft:redstone_block"
+      }
+    },
+    "result": {
+      "item": "vatonage:advanced_battery"
+    }
+  }
+}

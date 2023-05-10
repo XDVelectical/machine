@@ -1,0 +1,264 @@
+{
+   "format_version":"1.16.0",
+   "minecraft:block":{
+      "description":{
+         "identifier":"vatonage:fluid_cable_water",
+         "properties":{
+            "vatonage:top":[
+               0,
+               1
+            ],
+            "vatonage:bottom":[
+               0,
+               1
+            ],
+            "vatonage:north":[
+               0,
+               1
+            ],
+            "vatonage:south":[
+               0,
+               1
+            ],
+            "vatonage:east":[
+               0,
+               1
+            ],
+            "vatonage:west":[
+               0,
+               1
+            ],
+            "vatonage:cooldown":[
+               0,
+               1,
+               2,
+               3,
+               4,
+               5,
+               6,
+               7
+            ]
+         }
+      },
+      "components":{
+         "minecraft:material_instances":{
+            "*":{
+               "texture":"imfluid_cable_water",
+               "render_method":"alpha_test"
+            }
+         },
+         "minecraft:loot": "loot_tables/blocks/fluid_cable.json",
+         "minecraft:pick_collision": {
+             "origin":  [-4, 4, -4],
+             "size":    [8, 8, 8]
+         },
+         "minecraft:entity_collision": {
+             "origin":  [-4, 4, -4],
+             "size":    [8, 8, 8]
+         },
+         "minecraft:ticking": {
+            "looping": true,
+            "range": [ 0.02, 0.02 ],
+            "on_tick": {
+               "event": "vatonage:cooldown",
+               "target": "self"
+            }
+         },
+         "minecraft:on_interact": {
+            "condition": "query.get_equipped_item_name == 'bucket'",
+            "event": "vatonage:interact"
+         },
+         "tag:fluid_cable": {},
+         "tag:water_fluid": {},
+         "tag:fluid_charged": {},
+         "minecraft:part_visibility": {
+             "rules": {
+                 "top": "q.block_property('vatonage:top') == 1",
+                 "bottom": "q.block_property('vatonage:bottom') == 1",
+                 "north": "q.block_property('vatonage:north') == 1",
+                 "east": "q.block_property('vatonage:east') == 1",
+                 "south": "q.block_property('vatonage:south') == 1",
+                 "west": "q.block_property('vatonage:west') == 1"
+             }
+         },
+         "minecraft:geometry":"geometry.impower_cable",
+         "minecraft:destroy_time":0.3,
+         "minecraft:on_placed":{
+            "event":"vatonage:place"
+         },
+         "minecraft:block_light_absorption":0
+      },
+      "events":{
+         "vatonage:interact": {
+            "decrement_stack": {
+            },
+                     "run_command": {
+                         "command": [
+                                    "give @p water_bucket"
+                                    ]
+                     },
+            "set_block": {
+               "block_type": "vatonage:fluid_cable"
+            }
+         },
+         "vatonage:cooldown":{
+            "sequence":[
+                {
+                    "trigger": {
+                       "event": "vatonage:place"
+                    },
+                    "set_block_property": {
+                      "vatonage:cooldown": "query.block_property('vatonage:cooldown')+1"
+                    }
+                },
+                {
+                    "condition": "query.block_property('vatonage:cooldown') >= 3",
+                    "trigger": {
+                       "event": "vatonage:energy"
+                    }
+                }
+            ]
+         },
+         "vatonage:place":{
+            "sequence":[
+                {
+                    "condition": "q.block_neighbor_has_any_tag(0,0,-1,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:north": 1
+                    }
+                },
+                {
+                    "condition": "!q.block_neighbor_has_any_tag(0,0,-1,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:north": 0
+                    }
+                },
+                {
+                    "condition": "q.block_neighbor_has_any_tag(0,0,1,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:south": 1
+                    }
+                },
+                {
+                    "condition": "!q.block_neighbor_has_any_tag(0,0,1,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:south": 0
+                    }
+                },
+                {
+                    "condition": "q.block_neighbor_has_any_tag(-1,0,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:east": 1
+                    }
+                },
+                {
+                    "condition": "!q.block_neighbor_has_any_tag(-1,0,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:east": 0
+                    }
+                },
+                {
+                    "condition": "q.block_neighbor_has_any_tag(1,0,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:west": 1
+                    }
+                },
+                {
+                    "condition": "!q.block_neighbor_has_any_tag(1,0,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:west": 0
+                    }
+                },
+                {
+                    "condition": "q.block_neighbor_has_any_tag(0,1,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:top": 1
+                    }
+                },
+                {
+                    "condition": "!q.block_neighbor_has_any_tag(0,1,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:top": 0
+                    }
+                },
+                {
+                    "condition": "q.block_neighbor_has_any_tag(0,-1,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:bottom": 1
+                    }
+                },
+                {
+                    "condition": "!q.block_neighbor_has_any_tag(0,-1,0,'fluid_cable')",
+                    "set_block_property": {
+                        "vatonage:bottom": 0
+                    }
+                }
+            ]
+         },
+         "vatonage:energy":{
+             "randomize": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,-1,0,'fluided_cable')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~-1 ~ vatonage:fluid_cable_water",
+                                    "setblock ~ ~ ~ vatonage:fluid_cable"
+                                    ]
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(0,1,0,'fluided_cable')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~1 ~ vatonage:fluid_cable_water",
+                                    "setblock ~ ~ ~ vatonage:fluid_cable"
+                                    ]
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(1,0,0,'fluided_cable')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~1 ~ ~ vatonage:fluid_cable_water",
+                                    "setblock ~ ~ ~ vatonage:fluid_cable"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(-1,0,0,'fluided_cable')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~-1 ~ ~ vatonage:fluid_cable_water",
+                                    "setblock ~ ~ ~ vatonage:fluid_cable"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,1,'fluided_cable')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~1 vatonage:fluid_cable_water",
+                                    "setblock ~ ~ ~ vatonage:fluid_cable"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,-1,'fluided_cable')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~-1 vatonage:fluid_cable_water",
+                                    "setblock ~ ~ ~ vatonage:fluid_cable"
+                                    ]
+                     }
+                 }
+             ]
+         }
+      }
+   }
+}

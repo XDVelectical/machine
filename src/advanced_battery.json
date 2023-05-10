@@ -1,0 +1,377 @@
+{
+   "format_version": "1.16.100",
+   "minecraft:block": {
+      "description": {
+         "identifier": "vatonage:advanced_battery",
+         "register_to_creative_menu": true,
+         "properties": {
+            "vatonage:data":[
+               2,
+               3,
+               4,
+               5
+            ],
+            "vatonage:on":[
+               0,
+               1,
+               2,
+               3,
+               4,
+               5,
+               6,
+               7,
+               8
+            ]
+          }
+      },
+      "components": {
+         "minecraft:creative_category": {
+		"category": "construction"
+	},
+         "minecraft:pick_collision": {
+             "origin":  [-8, 0, -8],
+             "size":    [16, 16, 16]
+         },
+         "minecraft:entity_collision": {
+             "origin":  [-8, 0, -8],
+             "size":    [16, 16, 16]
+         },
+         "minecraft:geometry": "geometry.imbattery",
+         "minecraft:destroy_time": 1,
+         "tag:power_cable": {},
+         "minecraft:block_light_absorption": 0,
+         "minecraft:on_player_placing":{
+            "event":"vatonage:place"
+         }
+      },
+      "events": {
+         "vatonage:place":{
+            "set_block_property":{
+               "vatonage:data":"(query.cardinal_facing_2d)"
+            }
+         },
+         "vatonage:powered":{
+                    "set_block_property": {
+                      "vatonage:on": "query.block_property('vatonage:on')+1"
+                    }
+         },
+         "vatonage:energy1":{
+             "sequence": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,1,'charged2') && query.block_property('vatonage:on') <= 7",
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~1 vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "trigger": {
+                         "event": "vatonage:generate1"
+                     }
+                 }
+             ]
+         },
+         "vatonage:energy2":{
+             "sequence": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,-1,'charged2') && query.block_property('vatonage:on') <= 7",
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~-1 vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "trigger": {
+                         "event": "vatonage:generate2"
+                     }
+                 }
+             ]
+         },
+         "vatonage:energy3":{
+             "sequence": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(1,0,0,'charged2') && query.block_property('vatonage:on') <= 7",
+                     "run_command": {
+                         "command": [
+                                    "setblock ~1 ~ ~ vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "trigger": {
+                         "event": "vatonage:generate3"
+                     }
+                 }
+             ]
+         },
+         "vatonage:energy4":{
+             "sequence": [
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(-1,0,0,'charged2') && query.block_property('vatonage:on') <= 7",
+                     "run_command": {
+                         "command": [
+                                    "setblock ~-1 ~ ~ vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "trigger": {
+                         "event": "vatonage:generate4"
+                     }
+                 }
+             ]
+         },
+         "vatonage:generate1": {
+             "randomize": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,-1,'powered_cable') && query.block_property('vatonage:on') >= 1",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~-1 vatonage:powered_cable2"
+                                    ]
+                     },
+                    "set_block_property": {
+                      "vatonage:on": "query.block_property('vatonage:on')-1"
+                    }
+                 }
+             ]
+         },
+         "vatonage:generate2": {
+             "randomize": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,1,'powered_cable') && query.block_property('vatonage:on') >= 1",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~1 vatonage:powered_cable2"
+                                    ]
+                     },
+                    "set_block_property": {
+                      "vatonage:on": "query.block_property('vatonage:on')-1"
+                    }
+                 }
+             ]
+         },
+         "vatonage:generate3": {
+             "randomize": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(-1,0,0,'powered_cable') && query.block_property('vatonage:on') >= 1",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~-1 ~ ~ vatonage:powered_cable2"
+                                    ]
+                     },
+                    "set_block_property": {
+                      "vatonage:on": "query.block_property('vatonage:on')-1"
+                    }
+                 }
+             ]
+         },
+         "vatonage:generate4": {
+             "randomize": [
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(1,0,0,'powered_cable') && query.block_property('vatonage:on') >= 1",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~1 ~ ~ vatonage:powered_cable2"
+                                    ]
+                     },
+                    "set_block_property": {
+                      "vatonage:on": "query.block_property('vatonage:on')-1"
+                    }
+                 }
+             ]
+         }
+      },
+      "permutations":[
+         {
+            "condition":"query.block_property('vatonage:on') == 0",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 1",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_1",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 2",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_2",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 3",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_3",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 4",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_4",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 5",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_5",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 6",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_6",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 7",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_7",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:on') == 8",
+            "components":{
+               "minecraft:material_instances":{
+                  "*":{
+                     "texture":"imadvanced_battery_8",
+                     "render_method":"alpha_test"
+                  }
+               }
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:data') == 2",
+            "components":{
+               "minecraft:ticking": {
+                  "looping": true,
+                  "range": [ 0.19, 0.19 ],
+                  "on_tick": {
+                     "event": "vatonage:energy1",
+                     "target": "self"
+                  }
+               },
+               "minecraft:rotation":[
+                  0,
+                  0,
+                  0
+               ]
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:data') == 3",
+            "components":{
+               "minecraft:ticking": {
+                  "looping": true,
+                  "range": [ 0.19, 0.19 ],
+                  "on_tick": {
+                     "event": "vatonage:energy2",
+                     "target": "self"
+                  }
+               },
+               "minecraft:rotation":[
+                  0,
+                  180,
+                  0
+               ]
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:data') == 4",
+            "components":{
+               "minecraft:ticking": {
+                  "looping": true,
+                  "range": [ 0.19, 0.19 ],
+                  "on_tick": {
+                     "event": "vatonage:energy3",
+                     "target": "self"
+                  }
+               },
+               "minecraft:rotation":[
+                  0,
+                  90,
+                  0
+               ]
+            }
+         },
+         {
+            "condition":"query.block_property('vatonage:data') == 5",
+            "components":{
+               "minecraft:ticking": {
+                  "looping": true,
+                  "range": [ 0.19, 0.19 ],
+                  "on_tick": {
+                     "event": "vatonage:energy4",
+                     "target": "self"
+                  }
+               },
+               "minecraft:rotation":[
+                  0,
+                  270,
+                  0
+               ]
+            }
+         }
+      ]
+   }
+}

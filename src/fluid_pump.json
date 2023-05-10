@@ -1,0 +1,213 @@
+{
+   "format_version": "1.16.100",
+   "minecraft:block": {
+      "description": {
+         "identifier": "vatonage:fluid_pump",
+         "register_to_creative_menu": true
+      },
+      "components": {
+         "minecraft:creative_category": {
+		"category": "construction"
+	},
+         "minecraft:material_instances": {
+            "*": {
+               "texture": "imfluid_pump",
+               "render_method": "alpha_test"
+            }
+         },
+         "minecraft:pick_collision": {
+             "origin":  [-8, 0, -8],
+             "size":    [16, 16, 16]
+         },
+         "minecraft:entity_collision": {
+             "origin":  [-8, 0, -8],
+             "size":    [16, 16, 16]
+         },
+         "minecraft:ticking": {
+            "looping": true,
+            "range": [ 0.19, 0.19 ],
+            "on_tick": {
+               "event": "vatonage:energy",
+               "target": "self"
+            }
+         },
+         "minecraft:geometry": "geometry.imfluid_pump",
+         "minecraft:destroy_time": 1,
+         "tag:power_cable": {},
+         "tag:fluid_cable": {},
+         "minecraft:block_light_absorption": 0
+      },
+      "events":{
+         "vatonage:powered":{
+             "randomize": [
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(0,1,0,'fluided_cable') && q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~1 ~ vatonage:fluid_cable_water"
+                                    ]
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(1,0,0,'fluided_cable') && q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~1 ~ ~ vatonage:fluid_cable_water"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(-1,0,0,'fluided_cable') && q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~-1 ~ ~ vatonage:fluid_cable_water"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,1,'fluided_cable') && q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~1 vatonage:fluid_cable_water"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,-1,'fluided_cable') && q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~-1 vatonage:fluid_cable_water"
+                                    ]
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(0,1,0,'fluided_cable') && !q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~1 ~ vatonage:fluid_cable_lava"
+                                    ]
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(1,0,0,'fluided_cable') && !q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~1 ~ ~ vatonage:fluid_cable_lava"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(-1,0,0,'fluided_cable') && !q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~-1 ~ ~ vatonage:fluid_cable_lava"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,1,'fluided_cable') && !q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~1 vatonage:fluid_cable_lava"
+                                    ]
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,-1,'fluided_cable') && !q.block_neighbor_has_any_tag(0,-1,0,'water')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~-1 vatonage:fluid_cable_lava"
+                                    ]
+                     }
+                 }
+             ]
+         },
+         "vatonage:energy":{
+             "randomize": [
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,-1,0,'charged')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~-1 ~ vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(0,1,0,'charged')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~1 ~ vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                    "condition": "q.block_neighbor_has_any_tag(1,0,0,'charged')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~1 ~ ~ vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(-1,0,0,'charged')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~-1 ~ ~ vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,1,'charged')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~1 vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 },
+                 {
+                     "condition": "q.block_neighbor_has_any_tag(0,0,-1,'charged')",
+                     "weight":1,
+                     "run_command": {
+                         "command": [
+                                    "setblock ~ ~ ~-1 vatonage:power_cable"
+                                    ]
+                     },
+                     "trigger": {
+                         "event": "vatonage:powered"
+                     }
+                 }
+             ]
+         }
+      }
+   }
+}
