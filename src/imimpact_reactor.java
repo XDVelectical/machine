@@ -54,7 +54,8 @@
              "rules": {
                  "water": "q.block_property('vatonage:water') == 1",
                  "oxygen": "q.block_property('vatonage:oxygen') == 1",
-                 "carbon": "q.block_property('vatonage:carbon') == 1"
+                 "carbon": "q.block_property('vatonage:carbon') == 1",
+		 "lava": "q.block_property('vatonage:lava') == 1"
              }
          },
          "tag:fluid_cable": {},
