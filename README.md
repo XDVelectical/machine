@@ -20,3 +20,5 @@ adding machines so players can sort and move items with ease. can run tasks, wit
       "components": {
          "minecraft:creative_category": {
 		"category": "construction"
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
